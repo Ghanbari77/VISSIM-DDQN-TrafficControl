@@ -1,4 +1,5 @@
-from config import DEEP_LEARNING_PARAMS
+from config import INTERSECTIONS
+from config import Num_episodes
 
 
 
@@ -9,74 +10,57 @@ for episode in range(Num_episodes):
     # Start simulation
     time_step = 0
 
-    all_states_Dixie_Shawson = []
-    all_states_Dixie_Britannia = []
-    all_states_Dixie_401 = []
+   # Initialize storage for state, actions, and delays
+    state_data = {
+        "Dixie_Shawson": [],
+        "Dixie_Britannia": [],
+        "Dixie_401": [],
+        "final_state_Dixie_Shawson_batch": [],
+    }
+    
+    action_data = {
+        "all_actions": []
+    }
+    
+    delay_data = {
+        "VehDelay": [],
+        "TruckDelay": [],
+        "VehDelay_160_Second": [],
+        "TruckDelay_160_Second": [],
+        "Neighbour1Delay": [],
+        "Neighbour2Delay": [],
+        "Neighbour1_160_Delay": [],
+        "Neighbour2_160_Delay": [],
+    }
+    
+    input_data = {
+        "VehInput": {
+            "Dixie_Shawson": [],
+            "Dixie_Britannia": [],
+            "Dixie_401": []
+        },
+        "TruckPercentage": {
+            "Dixie_Shawson": [],
+            "Dixie_Britannia": [],
+            "Dixie_401": []
+        }
+    }
 
-    final_state_Dixie_Shawson_batch = []
-
-    all_actions = []
-    VehDelay = []
-    TruckDelay = []
-    VehDelay_160_Second = []
-    TruckDelay_160_Second = []
-
-    Neighbour1Delay = []
-    Neighbour2Delay = []
-    Neighbour1_160_Delay = []
-    Neighbour2_160_Delay = []
-
-    VehInput_Dixie_Shawson = []
-    VehInput_Dixie_Britannia = []
-    VehInput_Dixie_401 = []
-
-    TruckPercentage_Dixie_Shawson = []
-    TruckPercentage_Dixie_Britannia = []
-    TruckPercentage_Dixie_401 = []
-
-    # Dixie & 401
-    offset_Dixie_401 = 129
-    Min_green_SB_NB_Dixie_401 = 100
-    Min_green_WB_Dixie_401 = 45
-    End_of_Last_Cycle_Time_Dixie_401 = 0
-    split_Dixie_401 = [Min_green_SB_NB_Dixie_401, Min_green_WB_Dixie_401]
-
-    # Dixie & Shawson
-    End_of_Last_Barrier_Time_Dixie_Shawson = 0
-    offset_Dixie_Shawson = 1
-    Start_time_Dixie_Shawson = 0
-    spilits_Dixie_Shawson = [14, 87, 10, 87, 0, 52, 31, 23]
-    result_Dixie_Shawson = Ring_Barrier(spilits_Dixie_Shawson)
-    Ring1_Dixie_Shawson = True
-    if offset_Dixie_Shawson >= result_Dixie_Shawson.x[0] + result_Dixie_Shawson.x[1]:
-        Ring1_Dixie_Shawson = False
-        offset_Dixie_Shawson = offset_Dixie_Shawson - result_Dixie_Shawson.x[0] - result_Dixie_Shawson.x[1]
-    change_Dixie_Shawson = False
-
-    # Dixie & Britannia
-    End_of_Last_Barrier_Time_Dixie_Britannia = 0
-    offset_Dixie_Britannia = 1
-    Start_time_Dixie_Britannia = 0
-    spilits_Dixie_Britannia = [14, 82, 11, 85, 0, 58, 21, 43]
-    result_Dixie_Britannia = Ring_Barrier(spilits_Dixie_Britannia)
-    Ring1_Dixie_Britannia = True
-    if offset_Dixie_Britannia >= result_Dixie_Britannia.x[0] + result_Dixie_Britannia.x[1]:
-        Ring1_Dixie_Britannia = False
-        offset_Dixie_Britannia = offset_Dixie_Britannia - result_Dixie_Britannia.x[0] - result_Dixie_Britannia.x[1]
-
-    # Britannia & Shawson
-    End_of_Last_Cycle_Britannia_Shawson = 0
-    offset_Britannia_Shawson = 1
-    Start_time_Britannia_Shawson = 0
-    Ring1_Britannia_Shawson = True
-    phase_switch_Britannia_Shawson = False
-    Min_green_EW_Britannia_Shawson = 42
-    Split_EW_Britannia_Shawson = 49
-    Max_green_EW_Britannia_Shawson = 25
-    Min_green_NS_Britannia_Shawson = 26
-    Split_NS_Britannia_Shawson = 33
-    if offset_Britannia_Shawson >= Min_green_EW_Britannia_Shawson:
-        Ring1_Britannia_Shawson = False
+    # Access Dixie & 401 parameters
+    dixie_401_config = INTERSECTIONS["Dixie_401"]
+    offset_Dixie_401 = dixie_401_config["offset_Dixie_401"]
+    Min_green_SB_NB_Dixie_401 = dixie_401_config["Min_green_SB_NB_Dixie_401"]
+    Min_green_WB_Dixie_401 = dixie_401_config["Min_green_WB_Dixie_401"]
+    End_of_Last_Cycle_Time_Dixie_401 = dixie_401_config["End_of_Last_Cycle_Time_Dixie_401"]
+    split_Dixie_401 = dixie_401_config["split_Dixie_401"]
+    
+    # Access Dixie & Shawson parameters
+    dixie_shawson_config = INTERSECTIONS["Dixie_Shawson"]
+    offset_Dixie_Shawson = dixie_shawson_config["offset_Dixie_Shawson"]
+    Start_time_Dixie_Shawson = dixie_shawson_config["Start_time_Dixie_Shawson"]
+    Ring1_Dixie_Shawson = dixie_shawson_config["Ring1_Dixie_Shawson"]
+    change_Dixie_Shawson = dixie_shawson_config["change_Dixie_Shawson"]
+    result_Dixie_Shawson = dixie_shawson_config["result_Dixie_Shawson"]
 
     # Create action matrix and modify to have the zero value in the same index of split vector
     all_possible_actions = generate_all_actions()
