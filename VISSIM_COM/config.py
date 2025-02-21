@@ -16,3 +16,6 @@ gamma = 0.99 # Discount factor for future rewards
 epsilon = 1
 epsilon_decay = 0.9995
 epsilon_min = 0.01
+
+# Main Loop for Training
+Num_episodes = 200
