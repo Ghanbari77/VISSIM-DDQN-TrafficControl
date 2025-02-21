@@ -14,3 +14,45 @@ def save_data_to_csv(filename, data_records, append=False):
             pass
 
     df.to_csv(filename, index=False)
+
+
+def flatten_state(state):
+    """ 
+    Flattens the state representation for neural network input.
+    
+    Parameters:
+    -----------
+    state : list of lists
+        Contains sub-vectors representing different traffic parameters.
+
+    Returns:
+    --------
+    np.ndarray
+        Flattened 1D NumPy array.
+    """
+    return np.concatenate(
+        [state[0], state[1], state[2], state[3], state[4], state[5], state[6], state[7], state[8], state[9], state[10],
+         state[11]]
+    )  # state[0] = split time, state[1] = current phase, state[2] = local time, state[3] = queue length, state[4:8] = flow, state[8:12] = Truck Percentage
+
+def flatten_list(nested_list):
+    """ 
+    Recursively flattens a nested list into a single list.
+
+    Parameters:
+    -----------
+    nested_list : list
+        A potentially nested list of elements.
+
+    Returns:
+    --------
+    list
+        Flattened list of all elements.
+    """
+    flat_list = []
+    for element in nested_list:
+        if isinstance(element, list):
+            flat_list.extend(flatten_list(element))
+        else:
+            flat_list.append(element)
+    return flat_list
