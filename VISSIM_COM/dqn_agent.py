@@ -4,6 +4,7 @@ from collections import deque
 import random
 from config import INTERSECTIONS, DEEP_LEARNING_PARAMS
 from replay_memory import ReplayMemory
+from utiles import flatten_state, flatten_list
 
 # --- Access Deep Learning Parameters ---
 state_size = DEEP_LEARNING_PARAMS["state_sizes"]["total"]
