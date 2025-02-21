@@ -1,5 +1,6 @@
 import pandas as pd
 import numpy as np
+from config import DEEP_LEARNING_PARAMS
 
 def save_data_to_csv(filename, data_records, append=False):
     """Saves collected data to a CSV file."""
@@ -56,3 +57,10 @@ def flatten_list(nested_list):
         else:
             flat_list.append(element)
     return flat_list
+
+action_size = DEEP_LEARNING_PARAMS["action_size"]
+action_values = DEEP_LEARNING_PARAMS["action_values"]
+
+def generate_all_actions():
+    """Generates all possible actions based on action size and values."""
+    return np.array(np.meshgrid(*[action_values] * action_size)).T.reshape(-1, action_size)
