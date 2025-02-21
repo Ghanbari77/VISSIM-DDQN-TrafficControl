@@ -2,10 +2,17 @@ import numpy as np
 import tensorflow as tf
 from collections import deque
 import random
-from config import learning_rate, gamma
+from config import INTERSECTIONS, DEEP_LEARNING_PARAMS
 
-def build_q_network(state_size):
-    """Builds a Q-network model using Keras."""
+# --- Access Deep Learning Parameters ---
+state_size = DEEP_LEARNING_PARAMS["state_sizes"]["total"]
+learning_rate = DEEP_LEARNING_PARAMS["learning_rate"]
+
+def build_q_network():
+    """
+    Builds a Q-network model using TensorFlow's Keras API.
+    The model consists of four hidden layers with ReLU activations.
+    """
     model = tf.keras.Sequential([
         tf.keras.layers.InputLayer(input_shape=(state_size,)),
         tf.keras.layers.Dense(200, activation='relu'),
@@ -17,13 +24,16 @@ def build_q_network(state_size):
     model.compile(optimizer=tf.keras.optimizers.Adam(learning_rate=learning_rate), loss='mse')
     return model
 
+# --- Access Other Parameters ---
+action_size = DEEP_LEARNING_PARAMS["action_size"]
+
 class DQNAgent:
     def __init__(self, state_size, action_size):
         self.state_size = state_size
         self.action_size = action_size
         self.memory = deque(maxlen=15000)
-        self.q_network_1 = build_q_network(state_size)
-        self.q_network_2 = build_q_network(state_size)
+        self.q_network_1 = build_q_network()
+        self.q_network_2 = build_q_network()
 
     def select_action(self, state, epsilon, possible_actions):
         """Epsilon-greedy action selection."""
