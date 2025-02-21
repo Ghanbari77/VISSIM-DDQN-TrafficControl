@@ -3,6 +3,7 @@ import tensorflow as tf
 from collections import deque
 import random
 from config import INTERSECTIONS, DEEP_LEARNING_PARAMS
+from replay_memory import ReplayMemory
 
 # --- Access Deep Learning Parameters ---
 state_size = DEEP_LEARNING_PARAMS["state_sizes"]["total"]
@@ -26,12 +27,14 @@ def build_q_network():
 
 # --- Access Other Parameters ---
 action_size = DEEP_LEARNING_PARAMS["action_size"]
+max_memory_size = DEEP_LEARNING_PARAMS["max_memory_size"]
+
 
 class DQNAgent:
     def __init__(self, state_size, action_size):
         self.state_size = state_size
         self.action_size = action_size
-        self.memory = deque(maxlen=15000)
+        self.memory = ReplayMemory(max_size=max_memory_size)
         self.q_network_1 = build_q_network()
         self.q_network_2 = build_q_network()
 
