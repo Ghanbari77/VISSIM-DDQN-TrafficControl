@@ -39,7 +39,7 @@ INTERSECTIONS = {
         "End_of_Last_Barrier_Time_Dixie_Shawson": 0,
         "offset_Dixie_Shawson": 1,
         "Start_time_Dixie_Shawson": 0,
-        "spilits_Dixie_Shawson": [14, 87, 10, 87, 0, 52, 31, 23],
+        "splits_Dixie_Shawson": [14, 87, 10, 87, 0, 52, 31, 23],
         "result_Dixie_Shawson": None,  # Placeholder for Ring_Barrier result
         "Ring1_Dixie_Shawson": True,
         "change_Dixie_Shawson": False
@@ -49,15 +49,15 @@ INTERSECTIONS = {
         "End_of_Last_Barrier_Time_Dixie_Britannia": 0,
         "offset_Dixie_Britannia": 1,
         "Start_time_Dixie_Britannia": 0,
-        "spilits_Dixie_Britannia": [14, 82, 11, 85, 0, 58, 21, 43],
+        "splits_Dixie_Britannia": [14, 82, 11, 85, 0, 58, 21, 43],
         "result_Dixie_Britannia": None,  # Placeholder for Ring_Barrier result
         "Ring1_Dixie_Britannia": True
     }
 }
 
 # Compute Ring_Barrier results and update dictionary
-INTERSECTIONS["Dixie_Shawson"]["result_Dixie_Shawson"] = Ring_Barrier(INTERSECTIONS["Dixie_Shawson"]["spilits_Dixie_Shawson"])
-INTERSECTIONS["Dixie_Britannia"]["result_Dixie_Britannia"] = Ring_Barrier(INTERSECTIONS["Dixie_Britannia"]["spilits_Dixie_Britannia"])
+INTERSECTIONS["Dixie_Shawson"]["result_Dixie_Shawson"] = Ring_Barrier(INTERSECTIONS["Dixie_Shawson"]["splits_Dixie_Shawson"])
+INTERSECTIONS["Dixie_Britannia"]["result_Dixie_Britannia"] = Ring_Barrier(INTERSECTIONS["Dixie_Britannia"]["splits_Dixie_Britannia"])
 
 # Adjust offset based on conditions
 if INTERSECTIONS["Dixie_Shawson"]["offset_Dixie_Shawson"] >= INTERSECTIONS["Dixie_Shawson"]["result_Dixie_Shawson"].x[0] + INTERSECTIONS["Dixie_Shawson"]["result_Dixie_Shawson"].x[1]:
