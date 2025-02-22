@@ -1,4 +1,5 @@
 import os
+from simulation import load_vissim_network
 
 def init_fixed_time_controller(Vissim, layoutfile):
     """
