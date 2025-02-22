@@ -31,10 +31,9 @@ def flatten_state(state):
     np.ndarray
         Flattened 1D NumPy array.
     """
-    return np.concatenate(
-        [state[0], state[1], state[2], state[3], state[4], state[5], state[6], state[7], state[8], state[9], state[10],
-         state[11]]
-    )  # state[0] = split time, state[1] = current phase, state[2] = local time, state[3] = queue length, state[4:8] = flow, state[8:12] = Truck Percentage
+    if len(state) < 12:
+        raise ValueError("Expected state to have at least 12 elements.")
+    return np.concatenate(state[:12])  # state[0] = split time, state[1] = current phase, state[2] = local time, state[3] = queue length, state[4:8] = flow, state[8:12] = Truck Percentage
 
 def flatten_list(nested_list):
     """ 
