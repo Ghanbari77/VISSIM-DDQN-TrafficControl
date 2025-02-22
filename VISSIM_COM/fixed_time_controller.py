@@ -1,7 +1,7 @@
 import os
 from simulation import load_vissim_network
 
-def init_fixed_time_controller(Vissim, layoutfile):
+def init_fixed_time_controller(network_file, layoutfile):
     """
     Initializes the fixed time controller by loading the layout and returning the
     network and signal controllers objects.
@@ -21,14 +21,13 @@ def init_fixed_time_controller(Vissim, layoutfile):
         The collection of signal controllers from the network.
     """
     try:
-        layout_path = os.path.abspath(layoutfile)
-        Vissim.LoadLayout(layout_path)
+        Vissim = load_vissim_network(network_file, layoutfile)
         net = Vissim.Net
         scs = net.SignalControllers
-        return net, scs
+        return Vissim, net, scs
     except Exception as e:
         print(f"Error initializing fixed time controller: {e}")
-        return None, None
+        return None, None, None
 
 
 def Dixie_401_Signal(scs, Sim_time, offset, Min_green_SB_NB, Min_green_WB, End_of_Last_Cycle_Time):
